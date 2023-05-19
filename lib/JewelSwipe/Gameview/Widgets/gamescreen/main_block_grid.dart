@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/gamescreen/blockdrag_target.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/gamescreen/pseudogrid.dart';
 import 'package:provider/provider.dart';
 
 class BlockGrid extends StatefulWidget {
@@ -59,11 +60,11 @@ class _BlockGridState extends State<BlockGrid>
         height: screenSize.width,
         child: Stack(
           children: [
-            // Positioned(
-            //   left: offset,
-            //   top: offset,
-            //   child: const PseudoGrid(),
-            // ),
+            Positioned(
+              left: offset,
+              top: offset,
+              child: const PseudoGrid(),
+            ),
             Positioned.fill(
               left: 0,
               top: 0,
@@ -71,11 +72,11 @@ class _BlockGridState extends State<BlockGrid>
                 height: itemSize,
                 width: itemSize,
                 decoration: const BoxDecoration(
-                  color: Colors.brown,
-                  // image: DecorationImage(
-                  //   fit: BoxFit.cover,
-                  //   image: AssetImage("assets/images/shadowgrid2.png"),
-                  // ),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/shadowgrid2.png"),
+                  ),
                 ),
               ),
             ),

@@ -30,7 +30,7 @@ class JewelModel extends ChangeNotifier {
     List<Piece> elements = [];
 
     Random random = Random();
-    for (int i = 0; i < 3;) {
+    for (int i = 0; i < 1;) {
       final piece = Piece.pieces[random.nextInt(Piece.pieces.length)];
       if (elements.contains(piece)) continue;
       elements.add(piece);

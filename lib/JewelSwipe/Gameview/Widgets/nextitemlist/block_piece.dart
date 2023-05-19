@@ -29,17 +29,29 @@ class Block extends StatelessWidget {
                     game.isSet(currX, currY)
                 ? BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Colors.amber,
+                    image: const DecorationImage(
+                      image: AssetImage("assets/images/icey.png"),
+                    ),
                     border: Border.all(
                       color: Colors.grey.shade300,
                     ),
                   )
                 : game.gameIsOver && game.isSet(currX, currY)
                     ? const BoxDecoration(
-                        color: Colors.green,
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image:
+                              AssetImage("assets/images/Game Over Block.png"),
+                        ),
                       )
                     : game.isSet(currX, currY)
-                        ? const BoxDecoration(color: Colors.grey)
+                        ? const BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage(
+                                  "assets/images/ice block model (2).png"),
+                            ),
+                          )
                         : game.isPreview(currX, currY)
                             ? BoxDecoration(
                                 color: Colors.blue.shade100.withOpacity(0.5),

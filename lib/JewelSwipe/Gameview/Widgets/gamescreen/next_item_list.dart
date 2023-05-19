@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_data.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
-import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/block_item_list.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/block_item_preview.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/empty_item_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +23,7 @@ class _NextItemListState extends State<NextItemList> {
     final itemSize = (size.width * 0.95) / Dimensions.gridSize;
 
     return Container(
+      color: Colors.amber,
       padding: const EdgeInsets.only(bottom: 35),
       height: size.height / 5,
       width: size.width,
@@ -31,10 +32,9 @@ class _NextItemListState extends State<NextItemList> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(
-              3,
+              1,
               (index) {
                 final piece = game.nextPieces[index];
-
                 return Draggable<DragData>(
                   onDragStarted: () {
                     // game.pick();
@@ -54,7 +54,7 @@ class _NextItemListState extends State<NextItemList> {
                     ),
                   ),
                   child: Container(
-                    color: Colors.transparent,
+                    color: Colors.grey,
                     height: 100,
                     width: 100,
                     child: BlockItemPreview(

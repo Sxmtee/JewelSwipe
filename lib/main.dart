@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Gamescreen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
             errorBorder: defaultInputBorder,
           ),
         ),
-        // home: ,
+        home: const GameScreen(),
       ),
     );
   }
