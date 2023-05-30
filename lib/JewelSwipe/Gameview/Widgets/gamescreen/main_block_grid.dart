@@ -56,67 +56,71 @@ class _BlockGridState extends State<BlockGrid>
     final itemSize = (width * 0.95) / Dimensions.gridSize;
 
     return Consumer<JewelModel>(
-      builder: (context, game, child) => SizedBox(
-        height: screenSize.width,
-        child: Stack(
-          children: [
-            Positioned(
-              left: offset,
-              top: offset,
-              child: const PseudoGrid(),
-            ),
-            Positioned.fill(
-              left: 0,
-              top: 0,
-              child: Container(
-                height: itemSize,
-                width: itemSize,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/shadowgrid2.png"),
+      builder: (context, game, child) => GestureDetector(
+        onPanStart: (details) {},
+        onPanEnd: (details) {},
+        child: SizedBox(
+          height: screenSize.width,
+          child: Stack(
+            children: [
+              Positioned(
+                left: offset,
+                top: offset,
+                child: const PseudoGrid(),
+              ),
+              Positioned.fill(
+                left: 0,
+                top: 0,
+                child: Container(
+                  height: itemSize,
+                  width: itemSize,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/images/shadowgrid2.png"),
+                    ),
                   ),
                 ),
               ),
-            ),
-            ...List.generate(
-              Dimensions.gridSize,
-              (y) {
-                return List.generate(Dimensions.gridSize, (x) {
-                  if (game.row != null && !_controller.isAnimating) {
-                    _controller.forward();
-                    // game.dissolve();
-                  }
-                  return AnimatedBuilder(
-                    animation: _anim,
-                    builder: (context, child) => Positioned(
-                      top: offset +
-                          y * itemSize +
-                          ((game.row != null && game.row!.contains(y))
-                              ? _anim.value * width * pow(-1, x)
-                              : 0),
-                      left: offset +
-                          x * itemSize -
-                          ((game.row != null && game.row!.contains(y))
-                              ? _anim.value * width * pow(-1, y)
-                              : 0),
-                      child: Transform.rotate(
-                        angle: (game.row != null && game.row!.contains(y))
-                            ? _anim.value * pi
-                            : 0,
-                        child: BlockDragTarget(
-                          currX: x,
-                          currY: y,
-                          itemSize: itemSize,
+              ...List.generate(
+                Dimensions.gridSize,
+                (y) {
+                  return List.generate(Dimensions.gridSize, (x) {
+                    if (game.row != null && !_controller.isAnimating) {
+                      _controller.forward();
+                      // game.dissolve();
+                    }
+                    return AnimatedBuilder(
+                      animation: _anim,
+                      builder: (context, child) => Positioned(
+                        top: offset +
+                            y * itemSize +
+                            ((game.row != null && game.row!.contains(y))
+                                ? _anim.value * width * pow(-1, x)
+                                : 0),
+                        left: offset +
+                            x * itemSize -
+                            ((game.row != null && game.row!.contains(y))
+                                ? _anim.value * width * pow(-1, y)
+                                : 0),
+                        child: Transform.rotate(
+                          angle: (game.row != null && game.row!.contains(y))
+                              ? _anim.value * pi
+                              : 0,
+                          child: BlockDragTarget(
+                            currX: x,
+                            currY: y,
+                            itemSize: itemSize,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                });
-              },
-            ).expand((elem) => elem).toList(),
-          ],
+                    );
+                  });
+                },
+              ).expand((elem) => elem).toList(),
+            ],
+          ),
         ),
       ),
     );

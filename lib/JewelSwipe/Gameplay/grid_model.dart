@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_piece.dart';
 
-enum GridState { CLEAR, SET, COMPLETED }
+enum GridState { CLEAR, SET, COMPLETED, OCCUPIED }
 
 class Grid {
   final List<GridState> _grid;
@@ -21,7 +21,9 @@ class Grid {
   }
 
   bool isSet(int x, int y) {
-    return _isState(x, y, GridState.SET) || _isState(x, y, GridState.COMPLETED);
+    return _isState(x, y, GridState.SET) ||
+        _isState(x, y, GridState.OCCUPIED) ||
+        _isState(x, y, GridState.COMPLETED);
   }
 
   bool isClear(int x, int y) {
@@ -47,12 +49,17 @@ class Grid {
         0, Dimensions.gridSize * Dimensions.gridSize, GridState.CLEAR);
   }
 
-  void set(Piece piece, int x, int y, [GridState value = GridState.SET]) {
-    Point? position = _calculateBestPosition(
-        piece.occupations, piece.hori, piece.verti, x, y);
+  void set(CompoundPiece piece, int x, int y,
+      [GridState value = GridState.SET]) {
+    Point? position = _calculateBestPosition(piece.occupations, x, y);
     if (position == null) return;
 
-    setValues(piece.occupations, position.x.toInt(), position.y.toInt(), value);
+    setValues(
+      piece.occupations,
+      position.x.toInt(),
+      position.y.toInt(),
+      value,
+    );
   }
 
   void setValues(List<List<bool>> occupations, int x, int y,
@@ -75,7 +82,7 @@ class Grid {
     }
   }
 
-  bool doesFit(Piece piece, int x, int y) {
+  bool doesFit(CompoundPiece piece, int x, int y) {
     return _doesFit(piece.occupations, x, y);
   }
 
@@ -118,53 +125,52 @@ class Grid {
     return false;
   }
 
-  Point? calculateBestPosition(Piece piece, int x, int y) =>
-      _calculateBestPosition(piece.occupations, piece.hori, piece.verti, x, y);
+  Point? calculateBestPosition(CompoundPiece piece, int x, int y) =>
+      _calculateBestPosition(piece.occupations, x, y);
 
-  Point? _calculateBestPosition(
-      List<List<bool>> occupations, Hori hori, Verti verti, int x, int y) {
+  Point? _calculateBestPosition(List<List<bool>> occupations, int x, int y) {
     int sizeY = occupations.length;
     int sizeX = occupations[0].length;
 
     Point center = Point(x, y);
     Point? best;
-    int offsetY, offsetX;
+    // int offsetY, offsetX;
 
-    switch (hori) {
-      case Hori.one:
-        offsetY = 0;
-        break;
-      case Hori.two:
-        offsetY = 2;
-        break;
-      case Hori.three:
-        offsetY = 3;
-        break;
-      default:
-        offsetY = 0;
-    }
+    // switch (hori) {
+    //   case Hori.one:
+    //     offsetY = 0;
+    //     break;
+    //   case Hori.two:
+    //     offsetY = 2;
+    //     break;
+    //   case Hori.three:
+    //     offsetY = 3;
+    //     break;
+    //   default:
+    //     offsetY = 0;
+    // }
 
-    switch (verti) {
-      case Verti.two:
-        offsetX = 1;
-        break;
-      case Verti.three:
-        offsetX = 3;
-        break;
-      case Verti.four:
-        offsetX = 4;
-        break;
-      default:
-        offsetX = 0;
-    }
-    int start = -offsetX + 1, end = sizeX - offsetX;
-    if (offsetX == 0) {
-      start = -1;
-      end = 1;
-    }
+    // switch (verti) {
+    //   case Verti.two:
+    //     offsetX = 1;
+    //     break;
+    //   case Verti.three:
+    //     offsetX = 3;
+    //     break;
+    //   case Verti.four:
+    //     offsetX = 4;
+    //     break;
+    //   default:
+    //     offsetX = 0;
+    // }
+    // int start = -offsetX + 1, end = sizeX - offsetX;
+    // if (offsetX == 0) {
+    //   start = -1;
+    //   end = 1;
+    // }
 
-    for (int offY = -2; offY < sizeY - offsetY; offY++) {
-      for (int offX = start; offX < end; offX++) {
+    for (int offY = -2; offY < sizeY; offY++) {
+      for (int offX = -2; offX < sizeX; offX++) {
         if (_doesFit(occupations, x + offX, y + offY)) {
           Point current = Point(x + offX, y + offY);
 

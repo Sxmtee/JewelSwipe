@@ -1,229 +1,130 @@
-enum Hori { none, one, two, three }
+// enum Hori { none, one, two, three }
 
-enum Verti { none, one, two, three, four }
+// enum Verti { none, one, two, three, four }
 
-class Piece {
+enum PieceType { one, two, three, four, none }
+
+class CompoundPiece {
+  final Piece subpiece;
   List<List<bool>> occupations;
-  Hori hori;
-  Verti verti;
 
-  Piece(this.occupations, this.hori, this.verti);
+  CompoundPiece(this.subpiece, this.occupations);
 
-  static List<Piece> pieces = [
-    // ones
-    Piece(
-      [
-        [true],
-      ],
-      Hori.one,
-      Verti.one,
-    ),
-    Piece(
-      [
-        [true, true],
-      ],
-      Hori.one,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [true, true, true]
-      ],
-      Hori.one,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [true, true, true, true],
-      ],
-      Hori.one,
-      Verti.four,
-    ),
+  static List<List<List<bool>>> pieces = [
+    [
+      [true],
+    ],
+    [
+      [true, true],
+    ],
 
     // twos
-    Piece(
-      [
-        [true, false],
-        [false, true],
-      ],
-      Hori.two,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [false, true],
-        [true, false],
-      ],
-      Hori.two,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [false, true],
-        [true, true],
-      ],
-      Hori.two,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [true, false],
-        [true, true],
-      ],
-      Hori.two,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [true, true],
-        [true, false],
-      ],
-      Hori.two,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [true, true],
-        [false, true],
-      ],
-      Hori.two,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [true],
-        [true],
-      ],
-      Hori.two,
-      Verti.one,
-    ),
-    Piece(
-      [
-        [false, true, false],
-        [true, true, true],
-      ],
-      Hori.two,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [true, true, true],
-        [false, true, false],
-      ],
-      Hori.two,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [true, true, false],
-        [false, true, true],
-      ],
-      Hori.two,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [false, true, true],
-        [true, true, false],
-      ],
-      Hori.two,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [true, true, true],
-        [true, false, false],
-      ],
-      Hori.two,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [false, false, true],
-        [true, true, true],
-      ],
-      Hori.two,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [true, false, false],
-        [true, true, true],
-      ],
-      Hori.two,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [true, true, true],
-        [false, false, true],
-      ],
-      Hori.two,
-      Verti.three,
-    ),
-    Piece(
-      [
-        [true, true],
-        [true, true],
-      ],
-      Hori.two,
-      Verti.two,
-    ),
+    [
+      [false, true],
+      [true, true],
+    ],
+    [
+      [true, false],
+      [true, true],
+    ],
+    [
+      [true, true],
+      [true, false],
+    ],
+    [
+      [true, true],
+      [false, true],
+    ],
+    [
+      [true],
+      [true],
+    ],
+    [
+      [false, true, false],
+      [true, true, true],
+    ],
+    [
+      [true, true, true],
+      [false, true, false],
+    ],
+    [
+      [true, true, false],
+      [false, true, true],
+    ],
+    [
+      [false, true, true],
+      [true, true, false],
+    ],
+    [
+      [true, true, true],
+      [true, false, false],
+    ],
+    [
+      [false, false, true],
+      [true, true, true],
+    ],
+    [
+      [true, false, false],
+      [true, true, true],
+    ],
+    [
+      [true, true, true],
+      [false, false, true],
+    ],
+    [
+      [true, true],
+      [true, true],
+    ],
 
     //threes
-    Piece(
-      [
-        [true, false],
-        [true, true],
-        [true, false],
-      ],
-      Hori.three,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [false, true],
-        [true, true],
-        [false, true],
-      ],
-      Hori.three,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [true, true],
-        [false, true],
-        [false, true],
-      ],
-      Hori.three,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [true, false],
-        [true, false],
-        [true, true],
-      ],
-      Hori.three,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [true, true],
-        [true, false],
-        [true, false],
-      ],
-      Hori.three,
-      Verti.two,
-    ),
-    Piece(
-      [
-        [false, true],
-        [false, true],
-        [true, true],
-      ],
-      Hori.three,
-      Verti.two,
-    ),
+    [
+      [false, true],
+      [true, true],
+      [true, false],
+    ],
+    [
+      [true, false],
+      [true, true],
+      [true, false],
+    ],
+    [
+      [false, true],
+      [true, true],
+      [false, true],
+    ],
+    [
+      [true, false],
+      [true, true],
+      [false, true],
+    ],
+    [
+      [true, true],
+      [false, true],
+      [false, true],
+    ],
+    [
+      [true, false],
+      [true, false],
+      [true, true],
+    ],
+    [
+      [true, true],
+      [true, false],
+      [true, false],
+    ],
+    [
+      [false, true],
+      [false, true],
+      [true, true],
+    ],
   ];
+}
+
+class Piece {
+  final PieceType pieceType;
+  final int length;
+
+  Piece([this.pieceType = PieceType.none, this.length = 0]);
+
+  Piece copy() => Piece(pieceType, length);
 }

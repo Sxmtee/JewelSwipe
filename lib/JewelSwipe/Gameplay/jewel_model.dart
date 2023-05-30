@@ -9,6 +9,7 @@ import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_piece.dart';
 class JewelModel extends ChangeNotifier {
   late Grid _valueGrid;
   late Grid _previewGrid;
+  late List<CompoundPiece> nextPieces;
 
   int score = 0;
   int scoreMultiplier = 1;
@@ -16,8 +17,8 @@ class JewelModel extends ChangeNotifier {
   bool scoredLastInteraction = false;
   Map<String, List<int>> _setEntries = {};
   List<int>? get row => _setEntries['row'];
-
-  late List<Piece> nextPieces;
+  Offset panStart = const Offset(0, 0);
+  Offset panEnd = const Offset(0, 0);
 
   JewelModel() {
     nextPieces = generateNextPieces();
@@ -26,12 +27,17 @@ class JewelModel extends ChangeNotifier {
   }
 
   //random piece generator
-  List<Piece> generateNextPieces() {
-    List<Piece> elements = [];
+  List<CompoundPiece> generateNextPieces() {
+    List<CompoundPiece> elements = [];
 
     Random random = Random();
     for (int i = 0; i < 1;) {
-      final piece = Piece.pieces[random.nextInt(Piece.pieces.length)];
+      final subpiece =
+          Piece(PieceType.values[random.nextInt(PieceType.values.length)], 1);
+      final piece = CompoundPiece(
+        subpiece,
+        CompoundPiece.pieces[random.nextInt(CompoundPiece.pieces.length)],
+      );
       if (elements.contains(piece)) continue;
       elements.add(piece);
       i++;
@@ -39,10 +45,25 @@ class JewelModel extends ChangeNotifier {
     return elements;
   }
 
+  slidePiece(double itemSize, CompoundPiece piece) {
+    final initRow = panStart.dx ~/ itemSize;
+    final col = panStart.dy ~/ itemSize;
+    final dx = panEnd.dx - panStart.dx;
+    final dy = panEnd.dy - panStart.dy;
+    final slideCount = dx.abs() ~/ itemSize;
+
+    if (dx.abs() == 0 || dy.abs() > itemSize) return;
+    if (slideCount > 0) {
+      final row = initRow + slideCount;
+      _valueGrid.setValue(initRow, col, GridState.CLEAR);
+      _valueGrid.set(piece, row, col);
+    }
+  }
+
   //setting the piece and score multiplier
-  Future<bool> set(Piece piece, int x, int y, int index) async {
-    nextPieces[index] = Piece([], Hori.none, Verti.none);
-    if (!nextPieces.any((elem) => elem.occupations.isNotEmpty)) {
+  Future<bool> set(CompoundPiece piece, int x, int y, int index) async {
+    nextPieces.removeAt(index);
+    if (nextPieces.isEmpty) {
       nextPieces = generateNextPieces();
     }
 
@@ -64,12 +85,15 @@ class JewelModel extends ChangeNotifier {
   }
 
   //preview before setting block tiles
-  void setPreview(Piece piece, int currX, int currY) {
+  void setPreview(CompoundPiece piece, int currX, int currY) {
     _previewGrid.clearGrid();
     Point? position = _valueGrid.calculateBestPosition(piece, currX, currY);
     if (position == null) return;
     _previewGrid.setValues(
-        piece.occupations, position.x.toInt(), position.y.toInt());
+      piece.occupations,
+      position.x.toInt(),
+      position.y.toInt(),
+    );
 
     notifyListeners();
   }
@@ -146,7 +170,7 @@ class JewelModel extends ChangeNotifier {
   }
 
   //calculating the best position to place the piece
-  bool canPlaceFrom(Piece piece, int currX, int currY) {
+  bool canPlaceFrom(CompoundPiece piece, int currX, int currY) {
     return _valueGrid.calculateBestPosition(piece, currX, currY) != null;
   }
 

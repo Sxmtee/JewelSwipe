@@ -4,7 +4,7 @@ import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_piece.dart';
 import 'package:provider/provider.dart';
 
 class BlockItemPreview extends StatelessWidget {
-  final Piece piece;
+  final CompoundPiece piece;
   final int index;
   final double size;
   const BlockItemPreview({
@@ -38,7 +38,7 @@ class BlockItemPreview extends StatelessWidget {
                           return Container(
                             width: size,
                             height: size,
-                            decoration: piece.occupations[y][x] == true &&
+                            decoration: piece.occupations[x][y] == true &&
                                     !game.doesFit(piece.occupations, x, y)
                                 ? const BoxDecoration(
                                     image: DecorationImage(
