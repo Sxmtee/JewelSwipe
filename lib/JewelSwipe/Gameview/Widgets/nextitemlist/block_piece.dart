@@ -19,11 +19,13 @@ class Block extends StatelessWidget {
     if (currY >= Dimensions.gridSize) {
       return const SizedBox.expand();
     }
+    final screenSize = MediaQuery.of(context).size;
+    final height = screenSize.width * 0.95 / Dimensions.gridSize;
     return Consumer<JewelModel>(
       builder: (context, game, child) {
         return SizedBox(
           width: itemSize,
-          height: itemSize,
+          height: height,
           child: DecoratedBox(
             decoration: game.isCompleted(currX, currY) &&
                     game.isSet(currX, currY)
@@ -45,11 +47,11 @@ class Block extends StatelessWidget {
                         ),
                       )
                     : game.isSet(currX, currY)
-                        ? const BoxDecoration(
+                        ? BoxDecoration(
                             image: DecorationImage(
                               fit: BoxFit.fill,
-                              image: AssetImage(
-                                  "assets/images/ice block model (2).png"),
+                              image:
+                                  AssetImage(game.getPieceDecor(currX, currY)),
                             ),
                           )
                         : game.isPreview(currX, currY)

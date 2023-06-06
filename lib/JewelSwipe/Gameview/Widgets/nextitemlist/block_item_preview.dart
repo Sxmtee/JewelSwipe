@@ -5,13 +5,13 @@ import 'package:provider/provider.dart';
 
 class BlockItemPreview extends StatelessWidget {
   final CompoundPiece piece;
-  final int index;
+  // final int index;
   final double size;
   const BlockItemPreview({
     super.key,
     required this.piece,
     required this.size,
-    required this.index,
+    // required this.index,
   });
 
   @override
@@ -39,20 +39,21 @@ class BlockItemPreview extends StatelessWidget {
                             width: size,
                             height: size,
                             decoration: piece.occupations[x][y] == true &&
-                                    !game.doesFit(piece.occupations, x, y)
+                                    !game.doesFit(piece.occupations)
                                 ? const BoxDecoration(
                                     image: DecorationImage(
                                       fit: BoxFit.fill,
                                       image: AssetImage(
-                                          "assets/images/Game Over Block.png"),
+                                        "assets/images/Game Over Block.png",
+                                      ),
                                     ),
                                   )
                                 : piece.occupations[y][x] == true
-                                    ? const BoxDecoration(
+                                    ? BoxDecoration(
                                         image: DecorationImage(
                                           fit: BoxFit.fill,
                                           image: AssetImage(
-                                            "assets/images/ice block model (2).png",
+                                            piece.subpiece.pieceType.path,
                                           ),
                                         ),
                                       )

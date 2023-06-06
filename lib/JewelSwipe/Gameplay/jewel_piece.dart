@@ -2,7 +2,16 @@
 
 // enum Verti { none, one, two, three, four }
 
-enum PieceType { one, two, three, four, none }
+enum PieceType {
+  one("assets/images/icey.png"),
+  two("assets/images/Game Over Block.png"),
+  three("assets/images/jewel.png"),
+  four("assets/images/icey.png"),
+  none;
+
+  const PieceType([this.path = ""]);
+  final String path;
+}
 
 class CompoundPiece {
   final Piece subpiece;

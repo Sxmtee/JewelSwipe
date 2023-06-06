@@ -31,7 +31,7 @@ class BlockDragTarget extends StatelessWidget {
       onAccept: (data) async {
         var game = context.read<JewelModel>();
         game.clearPreview();
-        await game.set(data.piece, currX, currY - 2, data.index);
+        await game.set(data.piece, currX, currY - 2);
         // if (game.gameIsOver) {
         //   game.gameOver();
         //   Future.delayed(const Duration(seconds: 2)).then(

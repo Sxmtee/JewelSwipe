@@ -29,47 +29,39 @@ class _NextItemListState extends State<NextItemList> {
       width: size.width,
       child: Consumer<JewelModel>(
         builder: (context, game, child) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(
-              1,
-              (index) {
-                final piece = game.nextPieces[index];
-                return Draggable<DragData>(
-                  onDragStarted: () {
-                    // game.pick();
-                  },
-                  data: DragData(piece, index),
-                  childWhenDragging: const EmptyItemPreview(),
-                  dragAnchorStrategy: (Draggable<Object> draggable,
-                      BuildContext context, Offset position) {
-                    return Offset(50, itemSize * 4);
-                  },
-                  feedback: Transform.scale(
-                    scale: 1.25,
-                    child: BlockItemPreview(
-                      piece: piece,
-                      size: 30,
-                      index: index,
-                    ),
-                  ),
-                  child: Container(
-                    color: Colors.grey,
-                    height: 100,
-                    width: 100,
-                    child: BlockItemPreview(
-                      piece: piece,
-                      size: 20,
-                      index: index,
-                    ),
-                  ),
-                  onDragCompleted: () {
-                    // game.drop();
-                  },
-                );
-              },
+          final piece = game.nextPieces[0];
+          return Draggable<DragData>(
+            onDragStarted: () {
+              // game.pick();
+            },
+            data: DragData(piece),
+            childWhenDragging: const EmptyItemPreview(),
+            dragAnchorStrategy: (draggable, context, position) {
+              return Offset(50, itemSize * 4);
+            },
+            feedback: Transform.scale(
+              scale: 1.25,
+              child: BlockItemPreview(
+                piece: piece,
+                size: 30,
+                // index: 0,
+              ),
             ),
+            child: Container(
+              color: Colors.grey,
+              height: 100,
+              width: 100,
+              child: BlockItemPreview(
+                piece: piece,
+                size: 20,
+                // index: 0,
+              ),
+            ),
+            onDragCompleted: () {
+              // game.drop();
+            },
           );
+          ;
         },
       ),
     );

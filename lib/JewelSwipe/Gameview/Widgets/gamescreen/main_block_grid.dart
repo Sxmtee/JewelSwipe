@@ -57,8 +57,19 @@ class _BlockGridState extends State<BlockGrid>
 
     return Consumer<JewelModel>(
       builder: (context, game, child) => GestureDetector(
-        onPanStart: (details) {},
-        onPanEnd: (details) {},
+        onPanStart: (details) {
+          final box = context.findRenderObject() as RenderBox;
+          game.panEnd =
+              game.panStart = box.globalToLocal(details.globalPosition);
+        },
+        onPanUpdate: (details) {
+          final box = context.findRenderObject() as RenderBox;
+          game.panEnd = box.globalToLocal(details.globalPosition);
+          game.slidePiece(itemSize);
+        },
+        // onPanEnd: (details) {
+
+        // },
         child: SizedBox(
           height: screenSize.width,
           child: Stack(
@@ -86,11 +97,12 @@ class _BlockGridState extends State<BlockGrid>
               ...List.generate(
                 Dimensions.gridSize,
                 (y) {
-                  return List.generate(Dimensions.gridSize, (x) {
+                  return game.getRow(y).map((x) {
                     if (game.row != null && !_controller.isAnimating) {
                       _controller.forward();
                       // game.dissolve();
                     }
+
                     return AnimatedBuilder(
                       animation: _anim,
                       builder: (context, child) => Positioned(
@@ -111,12 +123,12 @@ class _BlockGridState extends State<BlockGrid>
                           child: BlockDragTarget(
                             currX: x,
                             currY: y,
-                            itemSize: itemSize,
+                            itemSize: itemSize * game.getPieceLength(x, y),
                           ),
                         ),
                       ),
                     );
-                  });
+                  }).toList();
                 },
               ).expand((elem) => elem).toList(),
             ],

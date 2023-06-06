@@ -19,6 +19,7 @@ class JewelModel extends ChangeNotifier {
   List<int>? get row => _setEntries['row'];
   Offset panStart = const Offset(0, 0);
   Offset panEnd = const Offset(0, 0);
+  bool shouldWatchAd = false;
 
   JewelModel() {
     nextPieces = generateNextPieces();
@@ -38,48 +39,74 @@ class JewelModel extends ChangeNotifier {
         subpiece,
         CompoundPiece.pieces[random.nextInt(CompoundPiece.pieces.length)],
       );
-      if (elements.contains(piece)) continue;
+      if (elements.any((elem) => elem.occupations == piece.occupations)) {
+        continue;
+      }
       elements.add(piece);
       i++;
     }
     return elements;
   }
 
-  slidePiece(double itemSize, CompoundPiece piece) {
-    final initRow = panStart.dx ~/ itemSize;
-    final col = panStart.dy ~/ itemSize;
+  void slidePiece(double itemSize) {
+    var initCol = panStart.dx ~/ itemSize;
+    final row = panStart.dy ~/ itemSize;
     final dx = panEnd.dx - panStart.dx;
     final dy = panEnd.dy - panStart.dy;
-    final slideCount = dx.abs() ~/ itemSize;
+    var slideCount = dx ~/ itemSize;
 
     if (dx.abs() == 0 || dy.abs() > itemSize) return;
-    if (slideCount > 0) {
-      final row = initRow + slideCount;
-      _valueGrid.setValue(initRow, col, GridState.CLEAR);
-      _valueGrid.set(piece, row, col);
+
+    if (!_valueGrid.hasPieceAt(initCol, row)) return;
+    initCol = _valueGrid.getWhereSet(initCol, row);
+
+    while (slideCount.abs() > 0 &&
+        _valueGrid.canSlide(initCol, row, slideCount > 0)) {
+      final col = initCol + slideCount.sign;
+      _valueGrid.setValue(null, col, row, GridState.SET, true);
+      initCol = col;
+      slideCount -= slideCount.sign;
     }
+    panStart = Offset(panStart.dx + slideCount * itemSize, panStart.dy);
+    notifyListeners();
   }
 
+  List<int> getRow(int row) => _valueGrid.getRow(row);
+
+  String getPieceDecor(int x, int y) => _valueGrid.getPieceDecor(x, y);
+
+  void afterWatchAd() {
+    nextPieces = generateNextPieces();
+  }
+
+  void watchAd() {}
+
   //setting the piece and score multiplier
-  Future<bool> set(CompoundPiece piece, int x, int y, int index) async {
-    nextPieces.removeAt(index);
+  Future<bool> set(CompoundPiece piece, int x, int y) async {
+    nextPieces.removeAt(0);
+
     if (nextPieces.isEmpty) {
-      nextPieces = generateNextPieces();
+      shouldWatchAd = true;
     }
 
     score += Dimensions.scoreForBlockSet * scoreMultiplier;
-    _valueGrid.set(piece, x, y);
+    _valueGrid.set(piece.subpiece, piece.occupations, x, y);
     notifyListeners();
     bool hasScoredLastInteraction = scoredLastInteraction;
-    scoredLastInteraction = await clearIfSet();
+    scoredLastInteraction = await clearIfSet(piece: piece.subpiece);
 
     if (hasScoredLastInteraction && scoredLastInteraction) {
       scoreMultiplier++;
     } else {
       scoreMultiplier = 1;
     }
+    _valueGrid.gravitate();
     _previewGrid.clearGrid();
     gameIsOver = isGameOver();
+
+    if (!gameIsOver) {
+      _valueGrid.generateStates();
+    }
     notifyListeners();
     return scoredLastInteraction;
   }
@@ -90,11 +117,12 @@ class JewelModel extends ChangeNotifier {
     Point? position = _valueGrid.calculateBestPosition(piece, currX, currY);
     if (position == null) return;
     _previewGrid.setValues(
+      piece.subpiece,
       piece.occupations,
       position.x.toInt(),
       position.y.toInt(),
     );
-
+    clearIfSet(piece: piece.subpiece, editValueGrid: false);
     notifyListeners();
   }
 
@@ -112,8 +140,11 @@ class JewelModel extends ChangeNotifier {
     return true;
   }
 
+  int getPieceLength(int x, int y) => _valueGrid.getPieceLength(x, y);
+
   //to clear the rows when they've aligned
-  Future<bool> clearIfSet({bool editValueGrid = true}) async {
+  Future<bool> clearIfSet(
+      {required Piece piece, bool editValueGrid = true}) async {
     bool wasCleared = false;
     Grid newValueGrid = Grid.copy(_valueGrid);
 
@@ -130,16 +161,21 @@ class JewelModel extends ChangeNotifier {
     for (int row = 0; row < Dimensions.gridSize; row++) {
       if (isRowSet(row)) {
         wasCleared = true;
-        _previewGrid.setValues([
-          [true, true, true, true, true, true, true, true, true]
-        ], 0, row, GridState.COMPLETED);
+        _previewGrid.setValues(
+            piece,
+            [
+              [true, true, true, true, true, true, true, true, true]
+            ],
+            0,
+            row,
+            GridState.COMPLETED);
         if (editValueGrid) {
           if (!_setEntries.containsKey('row')) _setEntries['row'] = [];
           _setEntries['row']!.add(row);
           Future.delayed(const Duration(seconds: 3), () {
             score += Dimensions.scoreForBlockCleared * scoreMultiplier;
             for (int x = 0; x < Dimensions.gridSize; x++) {
-              newValueGrid.setValue(x, row, GridState.CLEAR);
+              newValueGrid.setValue(piece, x, row, GridState.CLEAR);
             }
           });
         }
@@ -187,7 +223,7 @@ class JewelModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool doesFit(List<List<bool>> occupations, int x, int y) {
+  bool doesFit(List<List<bool>> occupations) {
     return _valueGrid.canBePlaced(occupations);
   }
 
