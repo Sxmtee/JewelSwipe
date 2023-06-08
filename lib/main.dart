@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
+import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_preferences.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Jewelscreen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  JewelPreferences.init();
   runApp(const MyApp());
 }
 
