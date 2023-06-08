@@ -23,7 +23,6 @@ class _NextItemListState extends State<NextItemList> {
     final itemSize = (size.width * 0.95) / Dimensions.gridSize;
 
     return Container(
-      color: Colors.amber,
       padding: const EdgeInsets.only(bottom: 35),
       height: size.height / 5,
       width: size.width,
@@ -48,7 +47,7 @@ class _NextItemListState extends State<NextItemList> {
               ),
             ),
             child: Container(
-              color: Colors.grey,
+              color: Colors.transparent,
               height: 100,
               width: 100,
               child: BlockItemPreview(

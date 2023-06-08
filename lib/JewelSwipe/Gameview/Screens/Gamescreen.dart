@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/gamescreen/blockdrag_target.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/gamescreen/main_block_grid.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/gamescreen/next_item_list.dart';
@@ -15,21 +16,22 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    var sizeHeight = size.height;
-    var sizeWidth = size.width;
-    final itemSize = sizeWidth * 0.9 / Dimensions.gridSize;
+    Sizes().init(context);
+    final itemSize = Sizes.screenWidth * 0.9 / Dimensions.gridSize;
     return Scaffold(
       body: SafeArea(
         child: Container(
-          height: sizeHeight,
-          // color: Colors.blue,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage("assets/images/mainBg.jpg"),
+            ),
+          ),
+          height: Sizes.screenHeight,
           child: Column(
             children: [
               const StatusBar(),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               const BlockGrid(),
               Column(
                 children: List.generate(
@@ -52,7 +54,7 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                 ),
               ),
-              const Flexible(child: NextItemList()),
+              // const Flexible(child: NextItemList()),
             ],
           ),
         ),

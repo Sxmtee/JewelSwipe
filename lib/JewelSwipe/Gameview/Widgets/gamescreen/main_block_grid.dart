@@ -88,8 +88,8 @@ class _BlockGridState extends State<BlockGrid>
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage("assets/images/shadowgrid2.png"),
+                      fit: BoxFit.fill,
+                      image: AssetImage("assets/images/grid.png"),
                     ),
                   ),
                 ),

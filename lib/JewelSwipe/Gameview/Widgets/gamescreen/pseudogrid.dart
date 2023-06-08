@@ -12,12 +12,12 @@ class PseudoGrid extends StatelessWidget {
 
     return Container(
       height: width,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage("assets/images/water2.gif"),
-        ),
-      ),
+      // decoration: const BoxDecoration(
+      //   image: DecorationImage(
+      //     fit: BoxFit.fill,
+      //     image: AssetImage("assets/images/water2.gif"),
+      //   ),
+      // ),
       child: Column(
         children: List.generate(
           Dimensions.blockCount,

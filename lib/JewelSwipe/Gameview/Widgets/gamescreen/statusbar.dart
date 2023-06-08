@@ -1,8 +1,10 @@
 // import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/gamebutton.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
 import 'package:provider/provider.dart';
 
 class StatusBar extends StatefulWidget {
@@ -18,9 +20,7 @@ class _StatusBarState extends State<StatusBar> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    var sizeHeight = size.height;
-    var sizeWidth = size.width;
+    Sizes().init(context);
     return Consumer<JewelModel>(
       builder: (context, game, child) {
         // if (prevScore != game.score) {
@@ -29,37 +29,76 @@ class _StatusBarState extends State<StatusBar> {
         //   });
         // }
         return Container(
-          padding: EdgeInsets.only(top: sizeHeight / 15),
-          height: sizeHeight / 8,
-          width: sizeWidth,
+          padding: EdgeInsets.only(
+            top: Sizes.screenHeight / 80,
+            left: Sizes.screenWidth / 15,
+            right: Sizes.screenWidth / 15,
+          ),
+          height: Sizes.sHeight * 12.5,
+          width: Sizes.screenWidth,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage("assets/images/statusboard.png"),
+            ),
+          ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              GameButton(
-                height: sizeHeight / 16,
-                width: sizeWidth / 7.2,
-                onPressed: () {
-                  game.reset();
-                },
-                assetName: "assets/images/icey.png",
+              Column(
+                children: [
+                  Text(
+                    "Score",
+                    style: GoogleFonts.allison(
+                      // color: Colors.brown.shade900,
+                      letterSpacing: 2,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "0",
+                    style: GoogleFonts.allison(
+                      // color: Colors.brown.shade900,
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              // Container(
-              //   width: sizeWidth / 5.14,
-              //   height: sizeHeight / 20,
-              //   alignment: Alignment.center,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(12),
-              //     color: const Color(0XFF005785),
-              //   ),
-              //   child: Text(
-              //     "$bestScore",
-              //     style: const TextStyle(
-              //       fontFamily: "Poppins",
-              //       color: Colors.white70,
-              //     ),
-              //   ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      "Best",
+                      style: GoogleFonts.almendraSc(
+                        // color: Colors.brown.shade900,
+                        letterSpacing: 2,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "0",
+                      style: GoogleFonts.allison(
+                        // color: Colors.brown.shade900,
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // GameButton(
+              //   height: sizeHeight / 16,
+              //   width: sizeWidth / 7.2,
+              //   onPressed: () {
+              //     game.reset();
+              //   },
+              //   assetName: "assets/images/icey.png",
               // ),
+
               // Container(
               //   width: sizeWidth / 5.14,
               //   height: sizeHeight / 20,
