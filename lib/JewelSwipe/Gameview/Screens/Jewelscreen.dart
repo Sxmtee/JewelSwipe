@@ -14,12 +14,15 @@ class JewelScreen extends StatefulWidget {
 class _JewelScreenState extends State<JewelScreen> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 5), () {
-      var route = MaterialPageRoute(
-        builder: (context) => const HomeScreen(),
-      );
-      Navigator.push(context, route);
-    });
+    Timer(
+      const Duration(seconds: 5),
+      () {
+        var route = MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        );
+        Navigator.push(context, route);
+      },
+    );
     super.initState();
   }
 

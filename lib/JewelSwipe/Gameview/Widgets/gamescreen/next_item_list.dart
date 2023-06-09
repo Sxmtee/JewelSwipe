@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_data.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
-import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/block_item_preview.dart';
+// import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/block_item_preview.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/empty_item_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -39,28 +39,27 @@ class _NextItemListState extends State<NextItemList> {
               return Offset(50, itemSize * 4);
             },
             feedback: Transform.scale(
-              scale: 1.25,
-              child: BlockItemPreview(
-                piece: piece,
-                size: 30,
-                // index: 0,
-              ),
-            ),
+                // scale: 1.25,
+                // child: BlockItemPreview(
+                //   piece: piece,
+                //   size: 30,
+                //   // index: 0,
+                // ),
+                ),
             child: Container(
               color: Colors.transparent,
               height: 100,
               width: 100,
-              child: BlockItemPreview(
-                piece: piece,
-                size: 20,
-                // index: 0,
-              ),
+              // child: BlockItemPreview(
+              //   piece: piece,
+              //   size: 20,
+              //   // index: 0,
+              // ),
             ),
             onDragCompleted: () {
               // game.drop();
             },
           );
-          ;
         },
       ),
     );

@@ -54,7 +54,7 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                 ),
               ),
-              // const Flexible(child: NextItemList()),
+              const Flexible(child: NextItemList()),
             ],
           ),
         ),

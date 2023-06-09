@@ -27,7 +27,7 @@ class _StatusBarState extends State<StatusBar> {
         if (prevScore != game.score) {
           Timer(const Duration(milliseconds: 1500), () {
             prevScore = game.score;
-          });
+          },);
         }
         return Container(
           padding: EdgeInsets.only(
@@ -82,6 +82,7 @@ class _StatusBarState extends State<StatusBar> {
                     Text(
                       "$bestScore",
                       style: GoogleFonts.allison(
+                        color: const Color(0XFFf09102),
                         fontSize: 35,
                         fontWeight: FontWeight.bold,
                       ),
