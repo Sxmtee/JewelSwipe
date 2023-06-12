@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/gamescreen/blockdrag_target.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/gamescreen/pseudogrid.dart';
 import 'package:provider/provider.dart';
@@ -20,22 +21,6 @@ class _BlockGridState extends State<BlockGrid>
   late Animation<double> _anim;
   double offset = 9;
 
-  // bool isInRange(List<int>? blockX, List<int>? blockY, int x, int y) {
-  //   if (blockX == null || blockY == null) return false;
-  //   final len = blockX.length;
-  //   for (int i = 0; i < len; i++) {
-  //     final bx = blockX[i], by = blockY[i];
-  //     if (x >= bx * Dimensions.blockSize &&
-  //         x < (bx + 1) * Dimensions.blockSize) {
-  //       if (y >= by * Dimensions.blockSize &&
-  //           y < (by + 1) * Dimensions.blockSize) {
-  //         return true;
-  //       }
-  //     }
-  //   }
-  //   return false;
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -51,9 +36,8 @@ class _BlockGridState extends State<BlockGrid>
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final width = screenSize.width;
-    final itemSize = (width * 0.95) / Dimensions.gridSize;
+    Sizes().init(context);
+    final itemSize = (Sizes.screenWidth * 0.95) / Dimensions.gridSize;
 
     return Consumer<JewelModel>(
       builder: (context, game, child) => GestureDetector(
@@ -71,7 +55,7 @@ class _BlockGridState extends State<BlockGrid>
 
         // },
         child: SizedBox(
-          height: screenSize.width,
+          height: Sizes.screenWidth,
           child: Stack(
             children: [
               Positioned(
@@ -83,10 +67,7 @@ class _BlockGridState extends State<BlockGrid>
                 left: 0,
                 top: 0,
                 child: Container(
-                  height: itemSize,
-                  width: itemSize,
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage("assets/images/grid.png"),
@@ -109,12 +90,12 @@ class _BlockGridState extends State<BlockGrid>
                         top: offset +
                             y * itemSize +
                             ((game.row != null && game.row!.contains(y))
-                                ? _anim.value * width * pow(-1, x)
+                                ? _anim.value * Sizes.screenWidth * pow(-1, x)
                                 : 0),
                         left: offset +
                             x * itemSize -
                             ((game.row != null && game.row!.contains(y))
-                                ? _anim.value * width * pow(-1, y)
+                                ? _anim.value * Sizes.screenWidth * pow(-1, y)
                                 : 0),
                         child: Transform.rotate(
                           angle: (game.row != null && game.row!.contains(y))

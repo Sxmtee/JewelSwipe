@@ -55,14 +55,31 @@ class _JewelScreenState extends State<JewelScreen> {
                 ),
               ),
             ),
-            Container(
-              height: Sizes.sHeight * 15,
-              width: Sizes.sWidth * 50,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/jewel.png"),
+            Stack(
+              children: [
+                Container(
+                  height: Sizes.sHeight * 15,
+                  width: Sizes.sWidth * 50,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/jewel.png"),
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  left: Sizes.sWidth * 18,
+                  bottom: Sizes.sHeight * 3,
+                  child: Container(
+                    height: Sizes.sHeight * 15,
+                    width: Sizes.sWidth * 50,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/LIGHT.png"),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

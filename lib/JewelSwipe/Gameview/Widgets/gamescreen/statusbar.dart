@@ -25,9 +25,12 @@ class _StatusBarState extends State<StatusBar> {
     return Consumer<JewelModel>(
       builder: (context, game, child) {
         if (prevScore != game.score) {
-          Timer(const Duration(milliseconds: 1500), () {
-            prevScore = game.score;
-          },);
+          Timer(
+            const Duration(milliseconds: 1500),
+            () {
+              prevScore = game.score;
+            },
+          );
         }
         return Container(
           padding: EdgeInsets.only(
@@ -44,14 +47,15 @@ class _StatusBarState extends State<StatusBar> {
             ),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
                   Text(
                     "Score",
-                    style: GoogleFonts.allison(
+                    style: GoogleFonts.aclonica(
                       letterSpacing: 2,
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -59,36 +63,33 @@ class _StatusBarState extends State<StatusBar> {
                     begin: prevScore.toDouble(),
                     end: (game.score).toDouble(),
                     duration: const Duration(seconds: 1),
-                    style: GoogleFonts.allison(
+                    style: GoogleFonts.aclonica(
                       letterSpacing: 2,
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Column(
-                  children: [
-                    Text(
-                      "Best",
-                      style: GoogleFonts.almendraSc(
-                        letterSpacing: 2,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
+              Column(
+                children: [
+                  Text(
+                    "Best",
+                    style: GoogleFonts.aclonica(
+                      letterSpacing: 2,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      "$bestScore",
-                      style: GoogleFonts.allison(
-                        color: const Color(0XFFf09102),
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  Text(
+                    "$bestScore",
+                    style: GoogleFonts.aclonica(
+                      color: const Color(0XFFf09102),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),

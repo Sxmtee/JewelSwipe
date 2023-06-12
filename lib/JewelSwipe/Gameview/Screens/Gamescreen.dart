@@ -31,7 +31,9 @@ class _GameScreenState extends State<GameScreen> {
           child: Column(
             children: [
               const StatusBar(),
-              const SizedBox(height: 30),
+              SizedBox(
+                height: Sizes.sHeight * 5,
+              ),
               const BlockGrid(),
               Column(
                 children: List.generate(
@@ -54,7 +56,9 @@ class _GameScreenState extends State<GameScreen> {
                   ),
                 ),
               ),
-              const Flexible(child: NextItemList()),
+              const Flexible(
+                child: NextItemList(),
+              ),
             ],
           ),
         ),

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
 
 class EmptyItemPreview extends StatelessWidget {
   const EmptyItemPreview({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      width: 120,
-      height: 100,
-      child: DecoratedBox(
+    Sizes().init(context);
+    return SizedBox(
+      width: Sizes.sWidth * 30,
+      height: Sizes.sHeight * 25,
+      child: const DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          image: DecorationImage(
+            image: AssetImage("assets/images/nextpiece.png"),
+          ),
         ),
       ),
     );

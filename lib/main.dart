@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_preferences.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Jewelscreen.dart';
@@ -6,6 +7,13 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.bottom],
+  );
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp],
+  );
   JewelPreferences.init();
   runApp(const MyApp());
 }
