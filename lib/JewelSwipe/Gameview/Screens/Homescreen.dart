@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:jewelswipe/JewelSwipe/Ad/banner_ad.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Gamescreen.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/gamebutton.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,16 +17,16 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _animationController;
   late Animation<Offset> _animation;
 
-  // final Uri _uri =
-  //     Uri.parse("https://www.youtube.com/@digitaldreamsictacademy1353");
+  final Uri _uri =
+      Uri.parse("https://www.youtube.com/@digitaldreamsictacademy1353");
 
-  // _launchUrl() async {
-  //   if (await canLaunchUrl(_uri)) {
-  //     await launchUrl(_uri, mode: LaunchMode.externalApplication);
-  //   } else {
-  //     throw Exception('Could not launch $_uri');
-  //   }
-  // }
+  _launchUrl() async {
+    if (await canLaunchUrl(_uri)) {
+      await launchUrl(_uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw Exception('Could not launch $_uri');
+    }
+  }
 
   @override
   void initState() {
@@ -45,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen>
     Size size = MediaQuery.of(context).size;
     var sizeHeight = size.height;
     var sizeWidth = size.width;
+    final myBanner = getBanner();
     return WillPopScope(
       onWillPop: () async {
         // exitGame(context);
@@ -93,9 +97,7 @@ class _HomeScreenState extends State<HomeScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GameButton(
-                    onPressed: () {
-                      // _launchUrl();
-                    },
+                    onPressed: _launchUrl,
                     width: sizeWidth / 3.6,
                     height: sizeHeight / 10,
                     assetName: "assets/images/youtube.png",
@@ -111,6 +113,15 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ],
               ),
+              const Spacer(),
+              FittedBox(
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  width: myBanner.size.width.toDouble(),
+                  height: myBanner.size.height.toDouble(),
+                  child: AdWidget(ad: myBanner),
+                ),
+              )
             ],
           ),
         ),

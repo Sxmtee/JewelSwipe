@@ -39,6 +39,8 @@ dependencies:
   countup: ^0.1.4
   shared_preferences: ^2.1.2
   http: ^1.0.0
+  url_launcher: ^6.1.11
+  google_mobile_ads: ^3.0.0
 
 dev_dependencies:
   flutter_test:
