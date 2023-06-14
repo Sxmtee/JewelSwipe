@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jewelswipe/JewelSwipe/Ad/app_cycle.dart';
+import 'package:jewelswipe/JewelSwipe/Ad/appopen_ad.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Homescreen.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
 
@@ -12,8 +14,14 @@ class JewelScreen extends StatefulWidget {
 }
 
 class _JewelScreenState extends State<JewelScreen> {
+  late AppLifecycleReactor appLifecycleReactor;
+
   @override
   void initState() {
+    AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
+    appLifecycleReactor =
+        AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
+    // WidgetsBinding.instance.addObserver(this);
     Timer(
       const Duration(seconds: 5),
       () {
@@ -25,6 +33,33 @@ class _JewelScreenState extends State<JewelScreen> {
     );
     super.initState();
   }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   super.didChangeAppLifecycleState(state);
+  //   switch (state) {
+  //     case AppLifecycleState.resumed:
+  //       break;
+  //     case AppLifecycleState.inactive:
+  //     case AppLifecycleState.detached:
+  //     case AppLifecycleState.paused:
+  //     case AppLifecycleState.hidden:
+  //       pauseMusic();
+  //       break;
+  //   }
+  // }
+
+  // @override
+  // void didChangeDependencies() {
+  //   precacheImage(myImage, context);
+  //   super.didChangeDependencies();
+  // }
+
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance.removeObserver(this);
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

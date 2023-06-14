@@ -10,13 +10,18 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
-    overlays: [SystemUiOverlay.bottom],
+    overlays: [SystemUiOverlay.top],
   );
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp],
   );
   await JewelPreferences.init();
-  await MobileAds.instance.initialize();
+  MobileAds.instance.initialize();
+  MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(
+      testDeviceIds: ["CE075C39729632CCB18AFA1B75C5B4F2"],
+    ),
+  );
   runApp(const MyApp());
 }
 

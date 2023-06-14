@@ -1,9 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jewelswipe">
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="jewelswipe"
+        android:label="Jewel Swipe"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4696224049420135~5528044649"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -114,13 +114,11 @@ class _HomeScreenState extends State<HomeScreen>
                 ],
               ),
               const Spacer(),
-              FittedBox(
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  width: myBanner.size.width.toDouble(),
-                  height: myBanner.size.height.toDouble(),
-                  child: AdWidget(ad: myBanner),
-                ),
+              Container(
+                alignment: Alignment.bottomCenter,
+                width: myBanner.size.width.toDouble(),
+                height: myBanner.size.height.toDouble(),
+                child: AdWidget(ad: myBanner),
               )
             ],
           ),
