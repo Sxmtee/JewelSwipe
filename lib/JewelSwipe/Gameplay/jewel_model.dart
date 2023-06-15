@@ -89,7 +89,7 @@ class JewelModel extends ChangeNotifier {
       shouldWatchAd = true;
     }
 
-    score += Dimensions.scoreForBlockSet * scoreMultiplier;
+    // score += Dimensions.scoreForBlockSet * scoreMultiplier;
     _valueGrid.set(piece.subpiece, piece.occupations, x, y);
     notifyListeners();
     bool hasScoredLastInteraction = scoredLastInteraction;

@@ -3,6 +3,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jewelswipe/JewelSwipe/Ad/banner_ad.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Gamescreen.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/gamebutton.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -45,9 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    var sizeHeight = size.height;
-    var sizeWidth = size.width;
+    Sizes().init(context);
     final myBanner = getBanner();
     return WillPopScope(
       onWillPop: () async {
@@ -65,16 +64,16 @@ class _HomeScreenState extends State<HomeScreen>
           child: Column(
             children: [
               Container(
-                height: sizeHeight / 2,
-                width: sizeWidth / 1.2,
-                margin: EdgeInsets.only(
-                  top: sizeHeight / 80,
-                ),
+                height: Sizes.sHeight * 40,
+                width: Sizes.sWidth * 70,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/images/swipelogo.png"),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: Sizes.sHeight * 10,
               ),
               SlideTransition(
                 position: _animation,
@@ -85,30 +84,30 @@ class _HomeScreenState extends State<HomeScreen>
                     );
                     Navigator.push(context, route);
                   },
-                  width: sizeWidth / 2,
-                  height: sizeHeight / 10,
+                  width: Sizes.sWidth * 50,
+                  height: Sizes.sHeight * 11,
                   assetName: "assets/images/play.png",
                 ),
               ),
               SizedBox(
-                height: sizeHeight / 26.67,
+                height: Sizes.sHeight * 4,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GameButton(
                     onPressed: _launchUrl,
-                    width: sizeWidth / 3.6,
-                    height: sizeHeight / 10,
+                    width: Sizes.sWidth * 28,
+                    height: Sizes.sHeight * 11,
                     assetName: "assets/images/youtube.png",
                   ),
                   SizedBox(
-                    width: sizeWidth / 12,
+                    width: Sizes.sWidth * 8,
                   ),
                   GameButton(
                     onPressed: () {},
-                    width: sizeWidth / 3.6,
-                    height: sizeHeight / 10,
+                    width: Sizes.sWidth * 28,
+                    height: Sizes.sHeight * 11,
                     assetName: "assets/images/leaderboard.png",
                   ),
                 ],

@@ -36,9 +36,11 @@ class RewardedState {
       adUnavailable(context);
       return;
     }
-    _rewardedAd!.show(onUserEarnedReward: (AdWithoutView, RewardItem) {
-      loadAd();
-      onEarnedReward();
-    });
+    _rewardedAd!.show(
+      onUserEarnedReward: (AdWithoutView, RewardItem) {
+        loadAd();
+        onEarnedReward();
+      },
+    );
   }
 }
