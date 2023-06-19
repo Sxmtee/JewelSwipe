@@ -7,8 +7,8 @@ import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_preferences.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Gamescreen.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Homescreen.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
-import 'package:platform_device_id/platform_device_id.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 
 class GameOver extends StatefulWidget {
   const GameOver({super.key});
@@ -28,7 +28,7 @@ class _GameOverState extends State<GameOver> {
   Future<void> post() async {
     final uri = Uri.parse("http://cbtportal.linkskool.com/api/post_score.php");
     Map<String, dynamic> postData = {};
-    String? deviceId = await PlatformDeviceId.getDeviceId;
+    final deviceId = await MobileDeviceIdentifier().getDeviceId();
     postData["score"] = JewelPreferences.getHighScore();
     postData["username"] = JewelPreferences.getNickname() ?? "";
     postData["avatar"] = 0;
@@ -70,6 +70,7 @@ class _GameOverState extends State<GameOver> {
           width: Sizes.screenWidth,
           decoration: const BoxDecoration(
             image: DecorationImage(
+              fit: BoxFit.fill,
               image: AssetImage("assets/images/mainBg.jpg"),
             ),
           ),
@@ -94,7 +95,7 @@ class _GameOverState extends State<GameOver> {
                   );
                   Navigator.push(context, route);
                 },
-                child: const Text("Go To Home"),
+                child: const Text("Go To Game"),
               ),
             ],
           ),

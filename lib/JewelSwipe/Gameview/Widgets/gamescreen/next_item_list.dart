@@ -5,7 +5,7 @@ import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Homescreen.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/gamebutton.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
-// import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/block_item_preview.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/block_item_preview.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/nextitemlist/empty_item_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -63,11 +63,11 @@ class _NextItemListState extends State<NextItemList> {
                 },
                 feedback: Transform.scale(
                   scale: 1.25,
-                  // child: BlockItemPreview(
-                  //   piece: piece,
-                  //   size: 30,
-                  //   // index: 0,
-                  // ),
+                  child: BlockItemPreview(
+                    piece: piece,
+                    size: 30,
+                    // index: 0,
+                  ),
                 ),
                 child: Container(
                   decoration: const BoxDecoration(
@@ -76,11 +76,10 @@ class _NextItemListState extends State<NextItemList> {
                     ),
                   ),
                   width: Sizes.sWidth * 30,
-                  // child: BlockItemPreview(
-                  //   piece: piece,
-                  //   size: 20,
-                  //   // index: 0,
-                  // ),
+                  child: BlockItemPreview(
+                    piece: piece,
+                    size: 10,
+                  ),
                 ),
                 onDragCompleted: () {
                   // game.drop();

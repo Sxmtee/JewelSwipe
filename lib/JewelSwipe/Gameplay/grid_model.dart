@@ -65,14 +65,15 @@ class Grid {
   }
 
   void setValue(Piece? piece, int x, int y, GridState value,
-      [shouldClear = false]) {
+      [shouldClear = false, toRight = true]) {
     if (notInGrid(x, y)) throw {"Index out of range ${x}x ${y}y"};
 
     if (shouldClear) {
-      final subpiece = _piecesTypes[y * Dimensions.gridSize + x - 1]!;
+      final sign = toRight ? 1 : -1;
+      final subpiece = _piecesTypes[y * Dimensions.gridSize + x - 1 * sign]!;
       var clearCount = subpiece.length;
 
-      for (var i = -1; i < clearCount - 1; i++) {
+      for (var i = -1 * sign; i < clearCount - 1 * sign; i++) {
         _grid[y * Dimensions.gridSize + x + i] = GridState.CLEAR;
       }
 

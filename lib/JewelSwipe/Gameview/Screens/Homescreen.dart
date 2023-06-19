@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jewelswipe/JewelSwipe/Ad/banner_ad.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Gamescreen.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Leaderboard.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/gamebutton.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,8 +19,9 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _animationController;
   late Animation<Offset> _animation;
 
-  final Uri _uri =
-      Uri.parse("https://www.youtube.com/@digitaldreamsictacademy1353");
+  final Uri _uri = Uri.parse(
+    "https://www.youtube.com/@digitaldreamsictacademy1353",
+  );
 
   _launchUrl() async {
     if (await canLaunchUrl(_uri)) {
@@ -105,7 +107,12 @@ class _HomeScreenState extends State<HomeScreen>
                     width: Sizes.sWidth * 8,
                   ),
                   GameButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      var route = MaterialPageRoute(
+                        builder: (context) => const LeaderBoard(),
+                      );
+                      Navigator.push(context, route);
+                    },
                     width: Sizes.sWidth * 28,
                     height: Sizes.sHeight * 11,
                     assetName: "assets/images/leaderboard.png",

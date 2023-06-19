@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:flutter/cupertino.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/grid_model.dart';
@@ -59,11 +60,12 @@ class JewelModel extends ChangeNotifier {
 
     if (!_valueGrid.hasPieceAt(initCol, row)) return;
     initCol = _valueGrid.getWhereSet(initCol, row);
+    dev.log("$slideCount", name: "slideCount");
 
     while (slideCount.abs() > 0 &&
         _valueGrid.canSlide(initCol, row, slideCount > 0)) {
       final col = initCol + slideCount.sign;
-      _valueGrid.setValue(null, col, row, GridState.SET, true);
+      _valueGrid.setValue(null, col, row, GridState.SET, true, slideCount > 0);
       initCol = col;
       slideCount -= slideCount.sign;
     }
