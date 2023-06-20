@@ -258,7 +258,7 @@ class Grid {
     return lastFilledRow;
   }
 
-  void generateStates() {
+  void levitate() {
     final rand = Random();
     var curPos = 0;
     final lastElems = _grid.skip(Dimensions.gridSize).toList();
@@ -273,7 +273,8 @@ class Grid {
       final randomLen = 1 + rand.nextInt(4);
 
       if (curPos + randomLen > Dimensions.gridSize) continue;
-      final pieceType = PieceType.values[rand.nextInt(PieceType.values.length)];
+      final pieceType =
+          PieceType.values[rand.nextInt(PieceType.values.length - 1)];
       lastElems[curPos + Dimensions.gridSize * (Dimensions.gridSize - 1)] =
           GridState.SET;
       _piecesTypes[curPos + Dimensions.gridSize * (Dimensions.gridSize - 1)] =
@@ -306,14 +307,14 @@ class Grid {
   void gravitate() {
     for (var i = _grid.length - Dimensions.gridSize; i >= 0; i--) {
       if (_grid[i] != GridState.SET) continue;
+      final piece = _piecesTypes[i]!;
+      final len = piece.length;
       int? emptyPos;
 
       for (var j = i + Dimensions.gridSize;
           j < _grid.length;
           j += Dimensions.gridSize) {
         if (_grid[j] == GridState.CLEAR) {
-          final len = _piecesTypes[j]!.length;
-
           if (len > 1) {
             var isBlocked = false;
 
@@ -335,8 +336,6 @@ class Grid {
       }
 
       if (emptyPos != null) {
-        final piece = _piecesTypes[i]!;
-        final len = piece.length;
         _grid[i] = GridState.CLEAR;
         _grid[emptyPos] = GridState.SET;
 

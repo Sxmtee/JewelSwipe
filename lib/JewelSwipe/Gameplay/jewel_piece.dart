@@ -6,7 +6,6 @@ enum PieceType {
   one("assets/images/icey.png"),
   two("assets/images/Game Over Block.png"),
   three("assets/images/jewel.png"),
-  four("assets/images/icey.png"),
   none;
 
   const PieceType([this.path = ""]);

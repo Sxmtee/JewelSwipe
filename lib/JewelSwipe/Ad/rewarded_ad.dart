@@ -6,6 +6,11 @@ class RewardedState {
   static RewardedAd? _rewardedAd;
   final adUnitId = "ca-app-pub-3940256099942544/5224354917";
 
+  static final RewardedState _sharedBombState =
+      RewardedState._getSharedBombState();
+  RewardedState._getSharedBombState();
+  factory RewardedState() => _sharedBombState;
+
   /// Loads a rewarded ad.
   loadAd() {
     RewardedAd.load(

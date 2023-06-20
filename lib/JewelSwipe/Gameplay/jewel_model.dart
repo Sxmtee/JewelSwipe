@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:developer' as dev;
 
 import 'package:flutter/cupertino.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/grid_model.dart';
@@ -21,6 +20,7 @@ class JewelModel extends ChangeNotifier {
   Offset panStart = const Offset(0, 0);
   Offset panEnd = const Offset(0, 0);
   bool shouldWatchAd = false;
+  bool isSliding = false;
 
   JewelModel() {
     nextPieces = generateNextPieces();
@@ -33,9 +33,9 @@ class JewelModel extends ChangeNotifier {
     List<CompoundPiece> elements = [];
 
     Random random = Random();
-    for (int i = 0; i < 1;) {
-      final subpiece =
-          Piece(PieceType.values[random.nextInt(PieceType.values.length)], 1);
+    for (int i = 0; i < 3;) {
+      final subpiece = Piece(
+          PieceType.values[random.nextInt(PieceType.values.length - 1)], 1);
       final piece = CompoundPiece(
         subpiece,
         CompoundPiece.pieces[random.nextInt(CompoundPiece.pieces.length)],
@@ -49,28 +49,33 @@ class JewelModel extends ChangeNotifier {
     return elements;
   }
 
-  void slidePiece(double itemSize) {
+  void slidePiece(double itemSize, [bool isRunning = false]) {
+    if (!isRunning && isSliding) return;
     var initCol = panStart.dx ~/ itemSize;
     final row = panStart.dy ~/ itemSize;
     final dx = panEnd.dx - panStart.dx;
     final dy = panEnd.dy - panStart.dy;
-    var slideCount = dx ~/ itemSize;
+    final slideCount = dx ~/ itemSize;
 
     if (dx.abs() == 0 || dy.abs() > itemSize) return;
 
     if (!_valueGrid.hasPieceAt(initCol, row)) return;
     initCol = _valueGrid.getWhereSet(initCol, row);
-    dev.log("$slideCount", name: "slideCount");
 
-    while (slideCount.abs() > 0 &&
+    if (slideCount.abs() > 0 &&
         _valueGrid.canSlide(initCol, row, slideCount > 0)) {
       final col = initCol + slideCount.sign;
       _valueGrid.setValue(null, col, row, GridState.SET, true, slideCount > 0);
-      initCol = col;
-      slideCount -= slideCount.sign;
+      panStart = Offset(panStart.dx + slideCount.sign * itemSize, panStart.dy);
+      notifyListeners();
+      debugPrint("slide3");
+      if (slideCount.abs() > 1) {
+        if (!isSliding) isSliding = true;
+        slidePiece(itemSize, true);
+      } else if (isSliding) {
+        isSliding = false;
+      }
     }
-    panStart = Offset(panStart.dx + slideCount * itemSize, panStart.dy);
-    notifyListeners();
   }
 
   List<int> getRow(int row) => _valueGrid.getRow(row);
@@ -78,10 +83,9 @@ class JewelModel extends ChangeNotifier {
   String getPieceDecor(int x, int y) => _valueGrid.getPieceDecor(x, y);
 
   void afterWatchAd() {
-    nextPieces = generateNextPieces();
+    shouldWatchAd = false;
+    notifyListeners();
   }
-
-  void watchAd() {}
 
   //setting the piece and score multiplier
   Future<bool> set(CompoundPiece piece, int x, int y) async {
@@ -89,6 +93,7 @@ class JewelModel extends ChangeNotifier {
 
     if (nextPieces.isEmpty) {
       shouldWatchAd = true;
+      nextPieces = generateNextPieces();
     }
 
     // score += Dimensions.scoreForBlockSet * scoreMultiplier;
@@ -102,13 +107,14 @@ class JewelModel extends ChangeNotifier {
     } else {
       scoreMultiplier = 1;
     }
-    _valueGrid.gravitate();
     _previewGrid.clearGrid();
+    _valueGrid.gravitate();
+    _valueGrid.levitate();
     gameIsOver = isGameOver();
 
-    if (!gameIsOver) {
-      _valueGrid.generateStates();
-    }
+    // if (!gameIsOver) {
+    //   _valueGrid.levitate();
+    // }
     notifyListeners();
     return scoredLastInteraction;
   }

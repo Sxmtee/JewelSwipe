@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jewelswipe/JewelSwipe/Ad/rewarded_ad.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_data.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
@@ -52,39 +53,60 @@ class _NextItemListState extends State<NextItemList> {
                 },
                 assetName: "assets/images/back.png",
               ),
-              Draggable<DragData>(
-                onDragStarted: () {
-                  // game.pick();
-                },
-                data: DragData(piece),
-                childWhenDragging: const EmptyItemPreview(),
-                dragAnchorStrategy: (draggable, context, position) {
-                  return Offset(50, itemSize * 4);
-                },
-                feedback: Transform.scale(
-                  scale: 1.25,
-                  child: BlockItemPreview(
-                    piece: piece,
-                    size: 30,
-                    // index: 0,
-                  ),
-                ),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/nextpiece.png"),
+              !game.shouldWatchAd
+                  ? Draggable<DragData>(
+                      onDragStarted: () {
+                        // game.pick();
+                      },
+                      data: DragData(piece),
+                      childWhenDragging: const EmptyItemPreview(),
+                      dragAnchorStrategy: (draggable, context, position) {
+                        return Offset(50, itemSize * 4);
+                      },
+                      feedback: Transform.scale(
+                        scale: 1.25,
+                        child: BlockItemPreview(
+                          piece: piece,
+                          size: 30,
+                          // index: 0,
+                        ),
+                      ),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            // fit: BoxFit.fill,
+                            image: AssetImage("assets/images/nextpiece.png"),
+                          ),
+                        ),
+                        width: Sizes.sWidth * 30,
+                        child: BlockItemPreview(
+                          piece: piece,
+                          size: 10,
+                        ),
+                      ),
+                      onDragCompleted: () {
+                        // game.drop();
+                      },
+                    )
+                  : Container(
+                      height: Sizes.sHeight * 10,
+                      width: Sizes.sWidth * 30,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: AssetImage("assets/images/nextpiece.png"),
+                        ),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.youtube_searched_for_rounded),
+                        onPressed: () {
+                          RewardedState().showAd(
+                            game.afterWatchAd,
+                            context,
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  width: Sizes.sWidth * 30,
-                  child: BlockItemPreview(
-                    piece: piece,
-                    size: 10,
-                  ),
-                ),
-                onDragCompleted: () {
-                  // game.drop();
-                },
-              ),
               GameButton(
                 width: 60,
                 onPressed: () {

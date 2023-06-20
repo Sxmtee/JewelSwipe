@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jewelswipe/JewelSwipe/Ad/banner_ad.dart';
+import 'package:jewelswipe/JewelSwipe/Ad/rewarded_ad.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Homescreen.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
@@ -22,6 +23,12 @@ class _GameScreenState extends State<GameScreen> {
       builder: (context) => const HomeScreen(),
     );
     Navigator.push(context, route);
+  }
+
+  @override
+  void initState() {
+    RewardedState().loadAd();
+    super.initState();
   }
 
   @override

@@ -38,7 +38,7 @@ class _StatusBarState extends State<StatusBar> {
             left: Sizes.screenWidth / 15,
             right: Sizes.screenWidth / 15,
           ),
-          height: Sizes.sHeight * 12.5,
+          height: Sizes.sHeight * 11,
           width: Sizes.screenWidth,
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -76,6 +76,7 @@ class _StatusBarState extends State<StatusBar> {
                   Text(
                     "Best",
                     style: GoogleFonts.aclonica(
+                      color: const Color(0XFFf09102),
                       letterSpacing: 2,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
