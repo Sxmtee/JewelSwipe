@@ -42,6 +42,7 @@ dependencies:
   url_launcher: ^6.1.11
   google_mobile_ads: ^3.0.0
   mobile_device_identifier: ^0.0.2
+  flutter_spinkit: ^5.2.0
 
 dev_dependencies:
   flutter_test:

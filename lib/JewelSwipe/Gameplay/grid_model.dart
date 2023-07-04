@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_dimension.dart';
@@ -80,7 +81,8 @@ class Grid {
       for (var i = 1; i < clearCount; i++) {
         _grid[Dimensions.gridSize * y + x + i] = GridState.OCCUPIED;
       }
-      _piecesTypes.remove(subpiece);
+      _piecesTypes.remove(y * Dimensions.gridSize + x - 1 * sign);
+
       _piecesTypes[Dimensions.gridSize * y + x] = subpiece;
     } else {
       assert(piece != null);
@@ -260,38 +262,47 @@ class Grid {
 
   void levitate() {
     final rand = Random();
+    // final lastElems = _grid.skip(Dimensions.gridSize).toList();
     var curPos = 0;
-    final lastElems = _grid.skip(Dimensions.gridSize).toList();
-    lastElems.addAll(List.filled(Dimensions.gridSize, GridState.CLEAR));
+    var shouldBreak = false;
+    // lastElems.addAll(List.filled(Dimensions.gridSize, GridState.CLEAR));
+
+    for (int i = Dimensions.gridSize; i < _grid.length; i++) {
+      if (_grid[i] == GridState.CLEAR) continue;
+      _grid[i - Dimensions.gridSize] = _grid[i];
+      _grid[i] = GridState.CLEAR;
+    }
 
     _piecesTypes = _piecesTypes.map((key, value) {
-      key -= Dimensions.gridSize;
-      return MapEntry(key, value);
+      final keyPrime = key - Dimensions.gridSize;
+      return MapEntry(keyPrime, value);
     });
 
     while (true) {
-      final randomLen = 1 + rand.nextInt(4);
+      final randomLen = shouldBreak
+          ? Dimensions.gridSize - (curPos + 1)
+          : 1 + rand.nextInt(4);
 
-      if (curPos + randomLen > Dimensions.gridSize) continue;
+      if (curPos + randomLen >= Dimensions.gridSize) continue;
       final pieceType =
           PieceType.values[rand.nextInt(PieceType.values.length - 1)];
-      lastElems[curPos + Dimensions.gridSize * (Dimensions.gridSize - 1)] =
+      _grid[curPos + Dimensions.gridSize * (Dimensions.gridSize - 1)] =
           GridState.SET;
       _piecesTypes[curPos + Dimensions.gridSize * (Dimensions.gridSize - 1)] =
           Piece(pieceType, randomLen);
 
       if (randomLen > 1) {
         for (var i = curPos + 1; i < curPos + randomLen - 1; i++) {
-          lastElems[i + Dimensions.gridSize * (Dimensions.gridSize - 1)] =
+          _grid[i + Dimensions.gridSize * (Dimensions.gridSize - 1)] =
               GridState.OCCUPIED;
         }
       }
       curPos += randomLen;
 
-      if (curPos >= Dimensions.gridSize) break;
+      if (curPos >= Dimensions.gridSize - 2) break;
 
       while (true) {
-        final spacing = rand.nextInt(4);
+        final spacing = rand.nextInt(3);
 
         if (curPos + spacing > Dimensions.gridSize) continue;
         curPos += spacing;
@@ -299,29 +310,35 @@ class Grid {
       }
 
       if (curPos >= Dimensions.gridSize) break;
+      if (curPos > Dimensions.gridSize - 4) shouldBreak = true;
     }
-    _grid.clear();
-    _grid.addAll(lastElems);
+    // _grid.clear();
+    // _grid.addAll(lastElems);
   }
 
-  void gravitate() {
-    for (var i = _grid.length - Dimensions.gridSize; i >= 0; i--) {
-      if (_grid[i] != GridState.SET) continue;
-      final piece = _piecesTypes[i]!;
+  Future<void> gravitate(Function notifyListeners) async {
+    final completer = Completer();
+    final pseudoGrid = List.from(_grid, growable: false);
+    final pieceTypeCopy = Map.from(_piecesTypes);
+    final Map<int, int> mapFromTo = {};
+
+    for (var i = pseudoGrid.length - Dimensions.gridSize; i >= 0; i--) {
+      if (pseudoGrid[i] != GridState.SET) continue;
+      final piece = pieceTypeCopy[i]!;
       final len = piece.length;
       int? emptyPos;
 
       for (var j = i + Dimensions.gridSize;
-          j < _grid.length;
+          j < pseudoGrid.length;
           j += Dimensions.gridSize) {
-        if (_grid[j] == GridState.CLEAR) {
+        if (pseudoGrid[j] == GridState.CLEAR) {
           if (len > 1) {
             var isBlocked = false;
 
             for (var k = 1; k < len; k++) {
               assert(j + k < Dimensions.gridSize * Dimensions.gridSize);
 
-              if (_grid[j + k] != GridState.CLEAR) {
+              if (pseudoGrid[j + k] != GridState.CLEAR) {
                 isBlocked = true;
                 break;
               }
@@ -336,17 +353,46 @@ class Grid {
       }
 
       if (emptyPos != null) {
-        _grid[i] = GridState.CLEAR;
-        _grid[emptyPos] = GridState.SET;
+        pseudoGrid[i] = GridState.CLEAR;
+        pseudoGrid[emptyPos] = GridState.SET;
 
         for (var k = 1; k < len; k++) {
-          _grid[i + k] = GridState.CLEAR;
-          _grid[emptyPos + k] = GridState.OCCUPIED;
+          pseudoGrid[i + k] = GridState.CLEAR;
+          pseudoGrid[emptyPos + k] = GridState.OCCUPIED;
         }
-        _piecesTypes.remove(piece);
-        _piecesTypes[emptyPos] = piece;
+        pieceTypeCopy.remove(i);
+        pieceTypeCopy[emptyPos] = piece;
+        mapFromTo[i] = emptyPos;
       }
     }
+
+    Timer.periodic(const Duration(milliseconds: 200), (timer) {
+      final mapCopy = Map.from(mapFromTo);
+      mapCopy.forEach((key, value) {
+        final j = key + Dimensions.gridSize;
+        final piece = pieceTypeCopy[value]!;
+        final len = piece.length;
+        _grid[key] = GridState.CLEAR;
+        _grid[j] = GridState.SET;
+        _piecesTypes.remove(key);
+        _piecesTypes[j] = piece;
+
+        for (var k = 1; k < len; k++) {
+          _grid[key + k] = GridState.CLEAR;
+          _grid[j + k] = GridState.OCCUPIED;
+        }
+        mapFromTo.remove(key);
+        if (j < value) mapFromTo[j] = value;
+      });
+      notifyListeners();
+
+      if (mapFromTo.isEmpty) {
+        timer.cancel();
+        completer.complete(true);
+      }
+    });
+
+    await completer.future;
   }
 
   bool canSlide(int oldCol, int row, bool isRight) {
@@ -420,16 +466,15 @@ class Grid {
   }
 
   int getPieceLength(int x, int y) {
-    var pos = 0;
+    var pos = -1;
 
     for (var i = 0; i < Dimensions.gridSize; i++) {
+      if (_grid[y * Dimensions.gridSize + i] == GridState.SET ||
+          _grid[y * Dimensions.gridSize + i] == GridState.CLEAR) pos++;
       if (pos == x) {
         final piece = _piecesTypes[y * Dimensions.gridSize + i];
         return piece == null ? 1 : piece.length;
       }
-
-      if (_grid[y * Dimensions.gridSize + i] == GridState.SET ||
-          _grid[y * Dimensions.gridSize + i] == GridState.CLEAR) pos++;
     }
     return 1;
   }

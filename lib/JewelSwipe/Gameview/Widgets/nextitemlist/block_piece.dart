@@ -27,42 +27,43 @@ class Block extends StatelessWidget {
           width: itemSize,
           height: height,
           child: DecoratedBox(
-            decoration: game.isCompleted(currX, currY) &&
-                    game.isSet(currX, currY)
-                ? BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: const DecorationImage(
-                      image: AssetImage("assets/images/icey.png"),
-                    ),
-                    border: Border.all(
-                      color: Colors.grey.shade300,
-                    ),
-                  )
-                : game.gameIsOver && game.isSet(currX, currY)
-                    ? const BoxDecoration(
+            decoration:
+                // game.isCompleted(currX, currY) &&
+                //         game.isSet(currX, currY)
+                //     ? BoxDecoration(
+                //         borderRadius: BorderRadius.circular(8),
+                //         image: const DecorationImage(
+                //           image: AssetImage("assets/images/icey.png"),
+                //         ),
+                //         border: Border.all(
+                //           color: Colors.grey.shade300,
+                //         ),
+                //       )
+                //     : game.gameIsOver && game.isSet(currX, currY)
+                //         ? const BoxDecoration(
+                //             image: DecorationImage(
+                //               fit: BoxFit.fill,
+                //               image:
+                //                   AssetImage("assets/images/Game Over Block.png"),
+                //             ),
+                //           )
+                //         :
+                game.isSet(currX, currY)
+                    ? BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.fill,
-                          image:
-                              AssetImage("assets/images/Game Over Block.png"),
+                          image: AssetImage(game.getPieceDecor(currX, currY)),
                         ),
                       )
-                    : game.isSet(currX, currY)
+                    : game.isPreview(currX, currY)
                         ? BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image:
-                                  AssetImage(game.getPieceDecor(currX, currY)),
+                            color: Colors.blue.shade100.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: Colors.grey.shade300,
                             ),
                           )
-                        : game.isPreview(currX, currY)
-                            ? BoxDecoration(
-                                color: Colors.blue.shade100.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(
-                                  color: Colors.grey.shade300,
-                                ),
-                              )
-                            : const BoxDecoration(color: Colors.transparent),
+                        : const BoxDecoration(color: Colors.transparent),
           ),
         );
       },

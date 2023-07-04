@@ -43,21 +43,21 @@ class _BlockGridState extends State<BlockGrid>
       builder: (context, game, child) => GestureDetector(
         onPanStart: (details) {
           // dev.log("moved", name: "slide1");
-          debugPrint("slide1");
+          // debugPrint("slide1");
           final box = context.findRenderObject() as RenderBox;
           game.panEnd =
               game.panStart = box.globalToLocal(details.globalPosition);
         },
         onPanUpdate: (details) {
           // dev.log("moved", name: "slide2");
-          debugPrint("slide2");
+          // debugPrint("slide2");
           final box = context.findRenderObject() as RenderBox;
           game.panEnd = box.globalToLocal(details.globalPosition);
           game.slidePiece(itemSize);
         },
-        // onPanEnd: (details) {
-        //   game.isSliding = false;
-        // },
+        onPanEnd: (details) {
+          game.activateGravity();
+        },
         child: SizedBox(
           height: Sizes.screenWidth,
           child: Stack(

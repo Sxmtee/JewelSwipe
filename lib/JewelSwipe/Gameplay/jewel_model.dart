@@ -31,8 +31,8 @@ class JewelModel extends ChangeNotifier {
   //random piece generator
   List<CompoundPiece> generateNextPieces() {
     List<CompoundPiece> elements = [];
-
     Random random = Random();
+
     for (int i = 0; i < 3;) {
       final subpiece = Piece(
           PieceType.values[random.nextInt(PieceType.values.length - 1)], 1);
@@ -108,15 +108,25 @@ class JewelModel extends ChangeNotifier {
       scoreMultiplier = 1;
     }
     _previewGrid.clearGrid();
-    _valueGrid.gravitate();
+    // await _valueGrid.gravitate(notifyListeners);
+    // await Future.delayed(const Duration(milliseconds: 400));
     _valueGrid.levitate();
-    gameIsOver = isGameOver();
+    // notifyListeners();
+    // await Future.delayed(const Duration(milliseconds: 400));
+    // await _valueGrid.gravitate(notifyListeners);
+
+    // gameIsOver = isGameOver();
 
     // if (!gameIsOver) {
     //   _valueGrid.levitate();
     // }
     notifyListeners();
     return scoredLastInteraction;
+  }
+
+  void activateGravity() async {
+    await Future.delayed(const Duration(milliseconds: 400));
+    _valueGrid.gravitate(notifyListeners);
   }
 
   //preview before setting block tiles
