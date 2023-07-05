@@ -62,7 +62,7 @@ class _MainTabState extends State<MainTab> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           title: const TabBar(
-            indicatorColor: Color(0XFF005785),
+            indicatorColor: Color(0XFFf09102),
             indicatorWeight: 4,
             labelStyle: TextStyle(
               fontWeight: FontWeight.bold,

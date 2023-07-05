@@ -20,7 +20,7 @@ class _RanksState extends State<Ranks> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CupertinoActivityIndicator(
-              color: Color(0XFF005785),
+              color: Color(0XFFf09102),
               radius: 50,
             ),
           );
@@ -31,48 +31,91 @@ class _RanksState extends State<Ranks> {
                 int.parse(e1['score']),
               ),
             );
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: Sizes.sWidth * 2.8,
-                  vertical: Sizes.sHeight * 0.63,
-                ),
-                child: Card(
-                  color: const Color(0XFF005785),
-                  shape: const StadiumBorder(),
-                  elevation: 10,
-                  child: ListTile(
-                    leading: Text(
-                      '${index + 1}',
-                      style: const TextStyle(
-                        color: Color(0XFF74e2fb),
-                        fontSize: 17,
-                        fontFamily: "Poppins",
+          return Column(
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Sizes.sWidth * 2.8,
+                      vertical: Sizes.sHeight * 0.63,
+                    ),
+                    child: Card(
+                      color: const Color(0XFF005785),
+                      shape: const StadiumBorder(),
+                      elevation: 10,
+                      child: ListTile(
+                        leading: index == 0
+                            ? Container(
+                                height: 50,
+                                width: 50,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                      "assets/images/Gold.png",
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : index == 1
+                                ? Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage(
+                                          "assets/images/Silver.png",
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : index == 2
+                                    ? Container(
+                                        height: 50,
+                                        width: 50,
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: AssetImage(
+                                              "assets/images/Bronze.png",
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Text(
+                                        '${index + 1}',
+                                        style: const TextStyle(
+                                          color: Color(0XFF74e2fb),
+                                          fontSize: 17,
+                                          fontFamily: "Poppins",
+                                        ),
+                                      ),
+                        title: Text(
+                          "${list[index]['username']}",
+                          style: const TextStyle(
+                            color: Color(0XFF74e2fb),
+                            fontSize: 17,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                        trailing: Text(
+                          "${list[index]['score']}",
+                          style: const TextStyle(
+                            color: Color(0XFF74e2fb),
+                            fontSize: 17,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
                       ),
                     ),
-                    title: Text(
-                      "${list[index]['username']}",
-                      style: const TextStyle(
-                        color: Color(0XFF74e2fb),
-                        fontSize: 17,
-                        fontFamily: "Poppins",
-                      ),
-                    ),
-                    trailing: Text(
-                      "${list[index]['score']}",
-                      style: const TextStyle(
-                        color: Color(0XFF74e2fb),
-                        fontSize: 17,
-                        fontFamily: "Poppins",
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
+                  );
+                },
+              ),
+            ],
           );
         } else if (snapshot.hasError) {
           return const Center(

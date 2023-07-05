@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:countup/countup.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_preferences.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Widgets/constants/sizes.dart';
@@ -51,9 +50,9 @@ class _StatusBarState extends State<StatusBar> {
             children: [
               Column(
                 children: [
-                  Text(
+                  const Text(
                     "Score",
-                    style: GoogleFonts.aclonica(
+                    style: TextStyle(
                       letterSpacing: 2,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -63,7 +62,7 @@ class _StatusBarState extends State<StatusBar> {
                     begin: prevScore.toDouble(),
                     end: (game.score).toDouble(),
                     duration: const Duration(seconds: 1),
-                    style: GoogleFonts.aclonica(
+                    style: const TextStyle(
                       letterSpacing: 2,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -73,10 +72,10 @@ class _StatusBarState extends State<StatusBar> {
               ),
               Column(
                 children: [
-                  Text(
+                  const Text(
                     "Best",
-                    style: GoogleFonts.aclonica(
-                      color: const Color(0XFFf09102),
+                    style: TextStyle(
+                      color: Color(0XFFf09102),
                       letterSpacing: 2,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -84,8 +83,8 @@ class _StatusBarState extends State<StatusBar> {
                   ),
                   Text(
                     "$bestScore",
-                    style: GoogleFonts.aclonica(
-                      color: const Color(0XFFf09102),
+                    style: const TextStyle(
+                      color: Color(0XFFf09102),
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),

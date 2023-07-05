@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jewelswipe/JewelSwipe/Gameview/Screens/GameOverscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JewelPreferences {
@@ -19,12 +20,12 @@ class JewelPreferences {
     }
 
     // navigate to game over screen
-    // var route = MaterialPageRoute(
-    //   builder: (context) {
-    //     return GameOver(score: score, highscore: _highscore);
-    //   },
-    // );
-    // Navigator.push(context, route);
+    var route = MaterialPageRoute(
+      builder: (context) {
+        return GameOver(score: score, highscore: _highscore);
+      },
+    );
+    Navigator.push(context, route);
   }
 
   static int? getHighScore() => _highscore;

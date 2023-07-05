@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_model.dart';
 import 'package:jewelswipe/JewelSwipe/Gameplay/jewel_preferences.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
           primaryColor: const Color(0XFF005785),
+          textTheme: GoogleFonts.aclonicaTextTheme(
+            Theme.of(context).textTheme,
+          ),
           inputDecorationTheme: const InputDecorationTheme(
             filled: true,
             fillColor: Colors.transparent,

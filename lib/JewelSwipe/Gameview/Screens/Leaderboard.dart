@@ -36,17 +36,17 @@ class _LeaderBoardState extends State<LeaderBoard> {
                   Container(
                     padding: EdgeInsets.only(
                       top: Sizes.screenHeight / 16,
+                      bottom: Sizes.sHeight * 5,
+                    ),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage("assets/images/panel.png"),
+                      ),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "LeaderBoard",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
                         GameButton(
                           onPressed: () {
                             var route = MaterialPageRoute(
@@ -55,6 +55,18 @@ class _LeaderBoardState extends State<LeaderBoard> {
                             Navigator.push(context, route);
                           },
                           assetName: "assets/images/back.png",
+                        ),
+                        SizedBox(
+                          width: Sizes.sWidth * 15,
+                        ),
+                        const Text(
+                          "LEADERBOARD",
+                          style: TextStyle(
+                            color: Color(0XFFf09102),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            fontFamily: "Poppins",
+                          ),
                         ),
                       ],
                     ),

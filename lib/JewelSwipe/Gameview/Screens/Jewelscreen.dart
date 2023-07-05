@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:jewelswipe/JewelSwipe/Ad/app_cycle.dart';
 import 'package:jewelswipe/JewelSwipe/Ad/appopen_ad.dart';
 import 'package:jewelswipe/JewelSwipe/Gameview/Screens/Homescreen.dart';
@@ -23,7 +24,7 @@ class _JewelScreenState extends State<JewelScreen> {
         AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
     // WidgetsBinding.instance.addObserver(this);
     Timer(
-      const Duration(seconds: 5),
+      const Duration(seconds: 7),
       () {
         var route = MaterialPageRoute(
           builder: (context) => const HomeScreen(),
@@ -116,6 +117,13 @@ class _JewelScreenState extends State<JewelScreen> {
                 ),
               ],
             ),
+            SizedBox(
+              height: Sizes.sHeight * 15,
+            ),
+            const SpinKitPouringHourGlass(
+              size: 70,
+              color: Colors.brown,
+            )
           ],
         ),
       ),

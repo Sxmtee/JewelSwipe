@@ -74,7 +74,6 @@ class _NextItemListState extends State<NextItemList> {
                       child: Container(
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                            // fit: BoxFit.fill,
                             image: AssetImage("assets/images/nextpiece.png"),
                           ),
                         ),
@@ -88,23 +87,22 @@ class _NextItemListState extends State<NextItemList> {
                         // game.drop();
                       },
                     )
-                  : Container(
-                      height: Sizes.sHeight * 10,
-                      width: Sizes.sWidth * 30,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage("assets/images/nextpiece.png"),
+                  : GestureDetector(
+                      onTap: () {
+                        RewardedState().showAd(
+                          game.afterWatchAd,
+                          context,
+                        );
+                      },
+                      child: Container(
+                        height: Sizes.sHeight * 10,
+                        width: Sizes.sWidth * 30,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage("assets/images/AdIcon.png"),
+                          ),
                         ),
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.youtube_searched_for_rounded),
-                        onPressed: () {
-                          RewardedState().showAd(
-                            game.afterWatchAd,
-                            context,
-                          );
-                        },
                       ),
                     ),
               GameButton(

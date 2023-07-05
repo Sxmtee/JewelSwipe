@@ -3,9 +3,22 @@
 // enum Verti { none, one, two, three, four }
 
 enum PieceType {
-  one("assets/images/icey.png"),
-  two("assets/images/Game Over Block.png"),
-  three("assets/images/jewel.png"),
+  one("assets/images/Blue1.png"),
+  two("assets/images/Blue2.png"),
+  three("assets/images/Blue3.png"),
+  four("assets/images/Blue4.png"),
+  five("assets/images/Orange.png"),
+  six("assets/images/Orange2.png"),
+  seven("assets/images/Orange3.png"),
+  eight("assets/images/Orange4.png"),
+  nine("assets/images/Pink1.png"),
+  ten("assets/images/Pink2.png"),
+  eleven("assets/images/Pink3.png"),
+  twelve("assets/images/Pink4.png"),
+  thirteen("assets/images/Purple1.png"),
+  fourteen("assets/images/Purple2.png"),
+  fifteen("assets/images/Purple3.png"),
+  sixteen("assets/images/Purple4.png"),
   none;
 
   const PieceType([this.path = ""]);
